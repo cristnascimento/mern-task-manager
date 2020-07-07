@@ -1,0 +1,89 @@
+<div class="container col-md-6" >
+    <br/>
+    <h1>Add contact {{id}}</h2><br/>
+    <form method="POST" action="/contact/post">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputFirstName">First Name</label>
+          <input type="text" class="form-control" id="inputFirstName" name="firstName" value="{{contact.firstName}}" {{ifReadonly mode}}>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputLastName">Last Name</label>
+          <input type="text" class="form-control" id="inputLastName" name="lastName" value="{{contact.lastName}}" {{ifReadonly mode}}>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputEmail">E-mail</label>
+        <input type="email" class="form-control" id="inputEmail" name="email" value="{{contact.email}}" {{ifReadonly mode}}>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-8">
+          <label for="inputPhone">Phone</label>
+          <input type="text" class="form-control" id="inputPhone" name="phone" value="{{contact.phone}}" {{ifReadonly mode}}>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputPhoneCategory">Category</label>
+          <select id="inputPhoneCategory" class="form-control" name="phoneCategory" value="{{contact.phoneCategory}}" {{ifDisabled mode}}>
+            <option {{ifSelected contact.phoneCategory "Mobile"}}>Mobile</option>
+            <option {{ifSelected contact.phoneCategory "Home"}}>Home</option>
+            <option {{ifSelected contact.phoneCategory "Work"}}>Work</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputAddress">Address</label>
+        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" name="address" value="{{contact.address}}" {{ifReadonly mode}}>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputCity">City</label>
+          <input type="text" class="form-control" id="inputCity" name="city" value="{{contact.city}}" {{ifReadonly mode}}>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputState">State</label>
+          <select id="inputState" class="form-control" name="state" value="{{contact.state}}" {{ifDisabled mode}}>
+            <option {{ifSelected contact.state "AC"}}>AC</option>
+            <option {{ifSelected contact.state "AL"}}>AL</option>
+            <option {{ifSelected contact.state "AP"}}>AP</option>
+            <option {{ifSelected contact.state "AM"}}>AM</option>
+            <option {{ifSelected contact.state "BA"}}>BA</option>
+            <option {{ifSelected contact.state "CE"}}>CE</option>
+            <option {{ifSelected contact.state "DF"}}>DF</option>
+            <option {{ifSelected contact.state "ES"}}>ES</option>
+            <option {{ifSelected contact.state "GO"}}>GO</option>
+            <option {{ifSelected contact.state "MA"}}>MA</option>
+            <option {{ifSelected contact.state "MT"}}>MT</option>
+            <option {{ifSelected contact.state "MS"}}>MS</option>
+            <option {{ifSelected contact.state "MG"}}>MG</option>
+            <option {{ifSelected contact.state "PA"}}>PA</option>
+            <option {{ifSelected contact.state "PB"}}>PB</option>
+            <option {{ifSelected contact.state "PR"}}>PR</option>
+            <option {{ifSelected contact.state "PE"}}>PE</option>
+            <option {{ifSelected contact.state "PI"}}>PI</option>
+            <option {{ifSelected contact.state "RJ"}}>RJ</option>
+            <option {{ifSelected contact.state "RS"}}>RS</option>
+            <option {{ifSelected contact.state "RN"}}>RN</option>
+            <option {{ifSelected contact.state "RO"}}>RO</option>
+            <option {{ifSelected contact.state "RR"}}>RR</option>
+            <option {{ifSelected contact.state "SC"}}>SC</option>
+            <option {{ifSelected contact.state "SP"}}>SP</option>
+            <option {{ifSelected contact.state "SE"}}>SE</option>
+            <option {{ifSelected contact.state "TO"}}>TO</option>
+          </select>
+        </div>
+        <div class="form-group col-md-2">
+          <label for="inputZip">Zip</label>
+          <input type="text" class="form-control" id="inputZip" name="zip"  value="{{contact.zip}}" {{ifReadonly mode}}>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="gridCheck" name="closeFriend"  value="{{contact.closeFriend}}" {{ifChecked contact.closeFriend}} {{ifDisabled mode}}>
+          <label class="form-check-label" for="gridCheck">
+            Close Friend
+          </label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+      <a href="/" class="btn btn-warning">Cancel</a>
+</form>
