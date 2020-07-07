@@ -2,46 +2,7 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 const app = express();
 const bodyParser = require('body-parser');
-
-let contacts = [
-  {
-    id:1,
-    firstName: "William",
-    lastName: "Patterson",
-    email: "patterson@blindspot.com",
-    phone: "+1 101 890809890",
-    phoneCategory: "Mobile",
-    address: "44 11th south",
-    city: "New York",
-    state: "PR",
-    zip: "87987",
-    closeFriend: ""},
-  {
-    id: 2,
-    firstName: "Edgar",
-    lastName: "Reade",
-    email: "reade@blindspot.com",
-    phone: "+1 301 730809890",
-    phoneCategory: "Mobile",
-    address: "1201 Atlantic Avenue",
-    city: "New York",
-    state: "RJ",
-    zip: "453452",
-    closeFriend: "on"},
-  {
-    id: 3,
-    firstName: "Natasha",
-    lastName: "Zapata",
-    email: "zapata@blindspot.com",
-    phone: "+1 728 79909141",
-    phoneCategory: "Mobile",
-    address: "322 Frank St",
-    city: "New York",
-    state: "MG",
-    zip: "4532234",
-    closeFriend: ""
-  },
-];
+const service = require("./contact.service");
 
 var hbs = exphbs.create({
     // Specify helpers which are only registered on this instance.
@@ -68,48 +29,42 @@ app.get("/home", function (req,res) {
 });
 
 app.get("/contact/list", function (req,res) {
+    let contacts = service.getContacts();
     res.render("list", {contacts: contacts});
 });
 
 app.get("/contact/add", function (req,res) {
-    res.render("contact", { mode: "add" });
+    let mode = {add: true, edit: false, view: false};
+    res.render("contact", { title: "Add contact", mode: mode, readonly: "", disabled: ""});
 });
 
 app.get("/contact/edit/:id", function (req,res) {
-  var contact = contacts.find(element => element.id == req.params.id);
-  res.render("contact", { mode: "edit", contact: contact });
+  let mode = {add: false, edit: true, view: false};
+  let contact = service.find(req.params.id);
+  res.render("contact", { title: "Update contact", mode: mode, contact: contact, readonly: "", disabled: "" });
 });
 
 app.get("/contact/view/:id", function (req,res) {
-  var contact = contacts.find(element => element.id == req.params.id);
-  res.render("contact", { mode: "view", contact: contact });
+  let mode = {add: false, edit: false, view: true};
+  let contact = service.find(req.params.id);
+  res.render("contact", { title: "View contact", mode: mode, contact: contact, readonly: "readonly", disabled: "disabled" });
 });
 
 app.post("/contact/post", function (req,res) {
-    let contact = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      phone: req.body.phone,
-      phoneCategory: req.body.phoneCategory,
-      address: req.body.address,
-      city: req.body.city,
-      state: req.body.state,
-      zip: req.body.zip,
-      closeFriend: req.body.closeFriend ? "on" : "",
-    };
-    contacts.push(contact);
-    console.log("firstName: "+contact.firstName);
-    console.log("lastName: "+contact.lastName);
-    console.log("email: "+contact.email);
-    console.log("phone: "+contact.phone);
-    console.log("phoneCategory: "+contact.phoneCategory);
-    console.log("address: "+contact.address);
-    console.log("city: "+contact.city);
-    console.log("state: "+contact.state);
-    console.log("zip: "+contact.zip);
-    console.log("closeFriend: "+contact.closeFriend);
-    res.end("lastName"+contact.lastName);
+    let newId = service.add(req.body);
+    service.print(newId);
+    res.redirect("/contact/list");
+});
+
+app.post("/contact/update/:id", function (req, res) {
+  service.update(req.params.id, req.body);
+  service.print(req.params.id);
+  res.redirect("/contact/view/"+req.params.id);
+});
+
+app.get("/contact/delete/:id", function (req, res) {
+  service.delete(req.params.id);
+  res.redirect("/contact/list");
 });
 
 app.listen(3000, function() {

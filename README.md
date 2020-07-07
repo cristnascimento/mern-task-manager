@@ -43,7 +43,8 @@ See this [Handlebars Quick Reference](https://github.com/ericf/express-handlebar
 $ npm install --save body-parser
 ```
 
-Learn more about [body-parser] (https://github.com/expressjs/body-parser)
+Learn more about [body-parser](https://github.com/expressjs/body-parser)
+
 ## Create Handlebars structure
 
 ```
