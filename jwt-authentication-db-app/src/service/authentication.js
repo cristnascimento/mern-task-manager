@@ -1,13 +1,18 @@
-const serviceDB = require('./../model/userDao')
+const bcrypt = require('bcrypt');
+const serviceDB = require('./../model/userDao');
 
 const authenticate = (username, password, callback) => {
 
   serviceDB.getUserByUserName(username, (err, user) => {
-    if (user && password === user.password) { 
+    
+    bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
             callback(null, true);
-    } else {
-        callback(null, false);
-    }
+        }
+        else {
+            callback(null, false);
+        }
+    })
   });
 
 }

@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { User } = require('./user');
 
 const getUser = async (id, callback) => { 
@@ -10,16 +11,19 @@ const getUserByUserName = async (username, callback) => {
     callback(null, user);
 }
 
-const createUser = async (user, callback) => {
-  const jane = await User.create({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    username: user.username,
-    email: user.email,
-    password: user.password,
-  });
-  callback(null);
-  console.log(jane.toJSON());
+const createUser = (user, callback) => {
+  const salt = 10;
+  bcrypt.hash(user.password, salt, async (err, hash) => {
+    const jane = await User.create({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      password: hash,
+    });
+    callback(null);
+    console.log(jane.toJSON());
+  })
 }
 
 const updateUser = async (user) => { }

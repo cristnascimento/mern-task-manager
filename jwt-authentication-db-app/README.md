@@ -254,7 +254,11 @@ class User extends Model {}
 User.init({
   firstName: DataTypes.STRING,
   lastName: DataTypes.STRING,
-  username: DataTypes.STRING,
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
   email: DataTypes.STRING,
   password: DataTypes.STRING
 }, { sequelize, modelName: 'User' });
@@ -280,6 +284,7 @@ $ node createModels
 Finally, create a DAO service to be used by other parts of the app, `model/userDao.js`
 
 ```javascript
+const bcrypt = require('bcrypt');
 const { User } = require('./user');
 
 const getUser = async (id, callback) => { 
@@ -292,16 +297,19 @@ const getUserByUserName = async (username, callback) => {
     callback(null, user);
 }
 
-const createUser = async (user, callback) => {
-  const jane = await User.create({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    username: user.username,
-    email: user.email,
-    password: user.password,
-  });
-  callback(null);
-  console.log(jane.toJSON());
+const createUser = (user, callback) => {
+  const salt = 10;
+  bcrypt.hash(user.password, salt, async (err, hash) => {
+    const jane = await User.create({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      password: hash,
+    });
+    callback(null);
+    console.log(jane.toJSON());
+  })
 }
 
 const updateUser = async (user) => { }
@@ -320,16 +328,21 @@ module.exports = {
 
 The authentication service, `service/authentication.js`
 ```javascript
-const serviceDB = require('./../model/userDao')
+const bcrypt = require('bcrypt');
+const serviceDB = require('./../model/userDao');
 
 const authenticate = (username, password, callback) => {
 
   serviceDB.getUserByUserName(username, (err, user) => {
-    if (user && password === user.password) { 
+    
+    bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
             callback(null, true);
-    } else {
-        callback(null, false);
-    }
+        }
+        else {
+            callback(null, false);
+        }
+    })
   });
 
 }
@@ -395,7 +408,7 @@ curl -X GET   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ
 ## Access page with a valid token
 
 ```
-curl -X GET   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE1OTU0MjM5NjV9.YoofwHiPmMbpwewC9Wzp2gcW0W8gP1PzYBfaRjhjwH4'   http://localhost:3000/check
+curl -X GET   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbmVkb2UiLCJpYXQiOjE1OTU2MDAwMzN9._d2JpQcFiO_kkMTUFmYB3EVrKW2BzPv68Fk3ja-S0Z4'   http://localhost:3000/check
 ```
 
 ## Access home page
