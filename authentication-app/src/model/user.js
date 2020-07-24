@@ -11,7 +11,11 @@ User.init({
     unique: true
   },
   email: DataTypes.STRING,
-  password: DataTypes.STRING
+  password: DataTypes.STRING,
+  active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  }
 }, { sequelize, modelName: 'User' });
 
 module.exports.User = User;
