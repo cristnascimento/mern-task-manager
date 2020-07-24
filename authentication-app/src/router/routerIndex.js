@@ -5,7 +5,7 @@ const controller = require('./../controller/controller');
 const router = express.Router()
 
 router.get('/', function (req, res) {
-  res.send('Birds home page')
+  res.render('home')
 })
 //router.get('/', controller.index);
 

@@ -17,6 +17,10 @@ router.get('/register/done', function (req, res) {
   res.send('register')
 })
 
+router.get('/register/confirmation/:id/:token/', function (req, res) {
+  res.send('register')
+})
+
 router.get('/login', function (req, res) {
   res.send('login')
 })
