@@ -1,5 +1,6 @@
 const userDao = require('./../model/userDao');
 const serviceToken = require('./../service/token');
+const serviceAuth = require('./../service/authentication')
 
 const registerForm = (req, res) => {
   res.render('register');
@@ -40,8 +41,41 @@ const registerConfirmation = (req, res) => {
   });
 }
 
+const loginForm = (req, res) => {
+  res.render('login');
+}
+
+const loginPost = (req, res) => {
+  let username = req.body.email;
+  let password = req.body.password;
+
+  if (username && password) {
+    serviceAuth.authenticate(username, password, (err, isAuthenticated) => {
+        if (isAuthenticated) {
+          serviceToken.generate({username: username}, (err, token) => {
+            res.cookie('token', token, {httpOnly: true});
+            res.redirect('/');
+          });
+        } else {
+          res.status(403).json({
+            success: false,
+            message: 'Incorrect username or password'
+          });
+        }
+    });
+
+  } else {
+    res.status(400).json({
+      success: false,
+      message: 'Authentication failed! Please check the request'
+    });
+  }
+}
+
 module.exports = {
   registerForm,
   registerPost,
-  registerConfirmation
+  registerConfirmation,
+  loginForm,
+  loginPost,
 }

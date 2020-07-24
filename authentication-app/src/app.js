@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
+const cookieParser = require('cookie-parser')
 
 const routerIndex = require('./router/routerIndex');
 const accountsRouter = require('./router/accountsRouter');
@@ -8,6 +9,8 @@ const accountsRouter = require('./router/accountsRouter');
 const app = express();
 
 app.use(express.static('public'))
+
+app.use(cookieParser());
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
