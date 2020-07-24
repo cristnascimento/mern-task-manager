@@ -79,11 +79,17 @@ const userAccount = (req, res) => {
   res.send('user account: ' + req.params.id)
 }
 
+const logout = (req, res) => {
+  res.cookie('token', '', {httpOnly: true});
+  res.redirect('/accounts/login');
+}
+
 module.exports = {
   registerForm,
   registerPost,
   registerConfirmation,
   loginForm,
   loginPost,
+  logout,
   userAccount,
 }

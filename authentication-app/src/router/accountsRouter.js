@@ -7,7 +7,7 @@ const accountsController = require('./../controller/accountsController');
 
 const router = express.Router()
 
-router.use(authMiddleware.validateToken);
+//router.use(authMiddleware.validateToken);
 
 router.get('/register', accountsController.registerForm);
 
@@ -19,9 +19,7 @@ router.get('/login', accountsController.loginForm);
   
 router.post('/login', accountsController.loginPost);
 
-router.get('/logout', function (req, res) {
-  res.send('login')
-})
+router.get('/logout', accountsController.logout);
 
 router.get('/password_reset', function (req, res) {
   res.send('reset')
