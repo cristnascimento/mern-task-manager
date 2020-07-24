@@ -34,18 +34,24 @@
           </li>
         </ul>
         <ul class="navbar-nav ml-auto navbar-right">
+              {{#unless user}}
               <li class="nav-item">
                       <a class="btn btn-primary" href="/accounts/register">Register</a>
               </li>
               <li class="nav-item ml-2">
                   <a class="btn btn-outline-primary" href="/accounts/login">Log in</a>
               </li>
+              {{/unless}}
+              
+              {{#if user}}
               <li class="nav-item ml-2">
                   <a class="nav-link" href="/accounts/{{user.id}}">My Account</a>
               </li>
               <li class="nav-item ml-2">
                   <a class="btn btn-danger" href="#">Log out</a>
               </li>
+              {{/if}}
+
             </ul>
       </div>
     </nav>

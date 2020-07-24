@@ -7,6 +7,8 @@ let validateToken = (req, res, next) => {
   serviceToken.verify(token, (err, decoded) => {
     if (err) {
       console.log("Invalid token: " + token);
+      req.user = null;
+      req.decoded = null;
     }
     else {
       req.user = {id: decoded.id};
