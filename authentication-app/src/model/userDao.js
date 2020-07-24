@@ -13,16 +13,21 @@ const getUserByUserName = async (username, callback) => {
 
 const createUser = (user, callback) => {
   const salt = 10;
+  console.log(user);
   bcrypt.hash(user.password, salt, async (err, hash) => {
-    const jane = await User.create({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      email: user.email,
-      password: hash,
-    });
-    callback(null);
-    console.log(jane.toJSON());
+    try {      
+      const jane = await User.create({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.email,
+        email: user.email,
+        password: hash,
+      });
+      callback(null);
+    } catch (Err) {
+      callback(Err);
+    }
+    
   })
 }
 
