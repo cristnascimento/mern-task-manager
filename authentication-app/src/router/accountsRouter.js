@@ -2,19 +2,19 @@ const express = require('express')
 
 const middleware = require('./../middleware/middleware');
 const controller = require('./../controller/controller');
+const accountsController = require('./../controller/accountsController');
 
 const router = express.Router()
 
-router.get('/register', function (req, res) {
-  res.send('register')
-})
+router.get('/register', accountsController.register);
 
 router.post('/register', function (req, res) {
-  res.send('register')
+  console.log(req.body);
+  res.redirect('/accounts/register/done');
 })
 
 router.get('/register/done', function (req, res) {
-  res.send('register')
+  res.send('register done')
 })
 
 router.get('/register/confirmation/:id/:token/', function (req, res) {

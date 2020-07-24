@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
 
 const routerIndex = require('./router/routerIndex');
-const routerAuth = require('./router/routerAuth');
+const accountsRouter = require('./router/accountsRouter');
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/accounts', routerAuth);
+app.use('/accounts', accountsRouter);
 app.use('/', routerIndex);
 
 app.listen(3000, () => {
