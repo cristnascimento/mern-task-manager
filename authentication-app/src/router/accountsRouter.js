@@ -6,16 +6,11 @@ const accountsController = require('./../controller/accountsController');
 
 const router = express.Router()
 
-router.get('/register', accountsController.register);
+router.get('/register', accountsController.registerForm);
 
-router.post('/register', function (req, res) {
-  console.log(req.body);
-  res.redirect('/accounts/register/done');
-})
+router.post('/register', accountsController.registerPost);
 
-router.get('/register/done', function (req, res) {
-  res.send('register done')
-})
+router.get('/register/done', accountsController.registerDone);
 
 router.get('/register/confirmation/:id/:token/', function (req, res) {
   res.send('register')
