@@ -2,6 +2,7 @@ let jwt = require('jsonwebtoken');
 let config = require('./../config');
 
 const generate = (payload, callback) => {
+  console.log(payload);
   jwt.sign(payload, config.secret, (err, token) => {
     callback(null, token);
   });

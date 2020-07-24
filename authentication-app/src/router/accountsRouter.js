@@ -1,10 +1,13 @@
 const express = require('express')
 
 const middleware = require('./../middleware/middleware');
+const authMiddleware = require('./../middleware/authenticationMiddleware');
 const controller = require('./../controller/controller');
 const accountsController = require('./../controller/accountsController');
 
 const router = express.Router()
+
+router.use(authMiddleware.validateToken);
 
 router.get('/register', accountsController.registerForm);
 
@@ -45,5 +48,7 @@ router.get('/reset/done', function (req, res) {
 })
 
 router.get('/check', middleware.checkToken, controller.check);
+
+router.get('/:id', authMiddleware.checkToken, accountsController.userAccount);
 
 module.exports = router

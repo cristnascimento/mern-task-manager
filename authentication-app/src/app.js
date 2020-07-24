@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 
 const routerIndex = require('./router/routerIndex');
 const accountsRouter = require('./router/accountsRouter');
+const authMiddleware = require('./middleware/authenticationMiddleware');
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.set('view engine', 'handlebars');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(authMiddleware.validateToken);
 
 app.use('/accounts', accountsRouter);
 app.use('/', routerIndex);

@@ -1,6 +1,7 @@
 const userDao = require('./../model/userDao');
 const serviceToken = require('./../service/token');
-const serviceAuth = require('./../service/authentication')
+const serviceAuth = require('./../service/authentication');
+const authMiddleware = require('./../middleware/authenticationMiddleware');
 
 const registerForm = (req, res) => {
   res.render('register');
@@ -14,7 +15,7 @@ const registerPost = (req, res) => {
     } 
     else {      
       let id = newId;
-      serviceToken.generate({id}, (err, token) => {
+      serviceToken.generate({id: id}, (err, token) => {
         res.render('register-done', {id, token});
       });
     }
@@ -42,7 +43,8 @@ const registerConfirmation = (req, res) => {
 }
 
 const loginForm = (req, res) => {
-  res.render('login');
+  console.log(req.user);
+  res.render('login', {user: req.user});
 }
 
 const loginPost = (req, res) => {
@@ -50,9 +52,9 @@ const loginPost = (req, res) => {
   let password = req.body.password;
 
   if (username && password) {
-    serviceAuth.authenticate(username, password, (err, isAuthenticated) => {
+    serviceAuth.authenticate(username, password, (err, isAuthenticated, userId) => {
         if (isAuthenticated) {
-          serviceToken.generate({username: username}, (err, token) => {
+          serviceToken.generate({id: userId}, (err, token) => {
             res.cookie('token', token, {httpOnly: true});
             res.redirect('/');
           });
@@ -72,10 +74,16 @@ const loginPost = (req, res) => {
   }
 }
 
+const userAccount = (req, res) => {
+  console.log('hi accounts');
+  res.send('user account: ' + req.params.id)
+}
+
 module.exports = {
   registerForm,
   registerPost,
   registerConfirmation,
   loginForm,
   loginPost,
+  userAccount,
 }

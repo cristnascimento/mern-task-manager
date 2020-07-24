@@ -7,7 +7,7 @@ const authenticate = (username, password, callback) => {
     
     bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
-            callback(null, true);
+            callback(null, true, user.id);
         }
         else {
             callback(null, false);
