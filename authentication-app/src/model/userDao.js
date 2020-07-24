@@ -34,6 +34,13 @@ const createUser = (user, callback) => {
 
 const updateUser = async (user) => { }
 const deleteUser = async (user) => { }
+const activateUser = async (id, callback) => { 
+  const user = await User.findByPk(id);
+  user.active = true;
+  user.save();
+  console.log(user.toJSON());
+  callback(null);
+}
 
 module.exports = {
     getUser,
@@ -41,4 +48,5 @@ module.exports = {
     createUser,
     updateUser,
     deleteUser,
+    activateUser,
 }

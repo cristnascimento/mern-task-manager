@@ -10,9 +10,7 @@ router.get('/register', accountsController.registerForm);
 
 router.post('/register', accountsController.registerPost);
 
-router.get('/register/confirmation/:id/:token/', function (req, res) {
-  res.send('register');
-});
+router.get('/register/confirmation/:id/:token/', accountsController.registerConfirmation);
 
 router.get('/login', function (req, res) {
   res.send('login')
