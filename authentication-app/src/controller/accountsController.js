@@ -6,12 +6,12 @@ const registerForm = (req, res) => {
 
 const registerPost = (req, res) => {
   console.log(req.body);
-  userDao.createUser(req.body, (err) => {
+  userDao.createUser(req.body, (err, newId) => {
     if (err) {
       res.render('register', {err: "E-mail ou senha inválidos.", user: req.body});
     } 
     else {      
-      let id = 'x';
+      let id = newId;
       let token = 'y';
       //res.redirect('/accounts/register/done/'+id+'/'+token);
       res.render('register-done', {id, token});

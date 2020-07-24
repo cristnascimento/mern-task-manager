@@ -23,7 +23,8 @@ const createUser = (user, callback) => {
         email: user.email,
         password: hash,
       });
-      callback(null);
+      console.log(jane.toJSON());
+      callback(null, jane.id);
     } catch (Err) {
       callback(Err);
     }
