@@ -7,6 +7,8 @@ const routerAuth = require('./router/routerAuth');
 
 const app = express();
 
+app.use(express.static('public'))
+
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
