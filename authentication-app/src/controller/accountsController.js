@@ -59,10 +59,7 @@ const loginPost = (req, res) => {
             res.redirect('/');
           });
         } else {
-          res.status(403).json({
-            success: false,
-            message: 'Incorrect username or password'
-          });
+          res.status(403).render("login", {err: 'Incorrect username or password'});
         }
     });
 
@@ -84,6 +81,59 @@ const logout = (req, res) => {
   res.redirect('/accounts/login');
 }
 
+const resetForm = (req, res) => {
+  res.render('reset-forgot');
+}
+
+const resetPost = (req, res) => {
+  userDao.getUserByEmail(req.body.email, (err, user) => {
+    console.log(user);
+    if (err) {
+      res.render('reset-forgot', {err: "E-mail inválido."});
+    } 
+    else {
+      serviceToken.generate({id: user.id}, (err, token) => {
+        res.render('reset-forgot-done', {id: user.id, token});
+      });
+    }    
+  });
+}
+
+const resetConfirmation = (req, res) => {
+  let id = req.params.id;
+  let token = req.params.token;
+  serviceToken.verify(token, (err, decoded) => {
+    if (err) {
+      res.render('reset-confirm', {err: 'Token inválido.'});
+    }
+    else {
+       res.render('reset-confirm', {id, token});
+    }
+  });
+}
+
+const resetConfirmationPost = (req, res) => {
+  let password = req.body.password;
+  let passwordConfirm = req.body.passwordConfirm;
+  let id = req.params.id;
+  let token = req.params.token;
+
+  serviceToken.verify(token, (err, decoded) => {
+    if (err) {
+      res.render('reset-confirm', {err: 'Token inválido.'});
+    }
+    else {
+        if (password !== '' && password === passwordConfirm) {
+          userDao.setNewPassword(id, password, (err) => {
+            res.render('reset-confirm-done');
+          });
+        } else {
+          res.render('reset-confirm', {err_pwd: 'As senhas não são idênticas.', id, token});     
+        }
+    }
+  });
+}
+
 module.exports = {
   registerForm,
   registerPost,
@@ -92,4 +142,8 @@ module.exports = {
   loginPost,
   logout,
   userAccount,
+  resetForm,
+  resetPost,
+  resetConfirmation,
+  resetConfirmationPost,
 }

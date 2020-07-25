@@ -11,6 +11,15 @@ const getUserByUserName = async (username, callback) => {
     callback(null, user);
 }
 
+const getUserByEmail = async (email, callback) => { 
+  try {
+    const user = await User.findOne({where: {username: email}});
+    callback(null, user);
+  } catch (Err) {
+    callback(Err, null);
+  }
+}
+
 const createUser = (user, callback) => {
   const salt = 10;
   console.log(user);
@@ -42,11 +51,24 @@ const activateUser = async (id, callback) => {
   callback(null);
 }
 
+const setNewPassword = async (id, password, callback) => {
+  const user = await User.findByPk(id);
+  const salt = 10;
+  
+  bcrypt.hash(password, salt, async (err, hash) => {
+    user.password = hash;
+    user.save();
+    callback(null);
+  });
+}
+
 module.exports = {
     getUser,
     getUserByUserName,
+    getUserByEmail,
     createUser,
     updateUser,
     deleteUser,
     activateUser,
+    setNewPassword,
 }

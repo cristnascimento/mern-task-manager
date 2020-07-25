@@ -7,8 +7,6 @@ const accountsController = require('./../controller/accountsController');
 
 const router = express.Router()
 
-//router.use(authMiddleware.validateToken);
-
 router.get('/register', accountsController.registerForm);
 
 router.post('/register', accountsController.registerPost);
@@ -21,31 +19,13 @@ router.post('/login', accountsController.loginPost);
 
 router.get('/logout', accountsController.logout);
 
-router.get('/password_reset', function (req, res) {
-  res.send('reset')
-})
+router.get('/password_reset', accountsController.resetForm);
 
-router.post('/password_reset', function (req, res) {
-  res.send('reset')
-})
+router.post('/password_reset', accountsController.resetPost);
 
-router.get('/password_reset/done', function (req, res) {
-  res.send('reset')
-})
+router.get('/password_reset/confirmation/:id/:token', accountsController.resetConfirmation);
 
-router.get('/reset/:id/:token', function (req, res) {
-  res.send('reset')
-})
-
-router.post('/reset/:id/:token', function (req, res) {
-  res.send('reset')
-})
-
-router.get('/reset/done', function (req, res) {
-  res.send('reset')
-})
-
-router.get('/check', middleware.checkToken, controller.check);
+router.post('/password_reset/confirmation/:id/:token', accountsController.resetConfirmationPost);
 
 router.get('/:id', authMiddleware.checkToken, accountsController.userAccount);
 
