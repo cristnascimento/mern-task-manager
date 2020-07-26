@@ -72,8 +72,7 @@ const loginPost = (req, res) => {
 }
 
 const userAccount = (req, res) => {
-  console.log('hi accounts');
-  res.send('user account: ' + req.params.id)
+  res.render('account', {user: req.user, userId: req.user.id})
 }
 
 const logout = (req, res) => {
