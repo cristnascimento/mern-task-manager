@@ -2,6 +2,10 @@ const express = require('express')
 const path = require('path')
 const ejs = require('ejs')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose');
+const BlogPost = require('./models/BlogPost')
+
+mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const app = express()
 
@@ -34,8 +38,8 @@ app.get('/posts/new', (req, res) => {
     res.render('create')
 })
 
-app.post('/posts/store', (req, res) => {
-    console.log(req.body)
+app.post('/posts/store', async (req, res) => {
+    await BlogPost.create(req.body)
     res.redirect('/')
 })
 
