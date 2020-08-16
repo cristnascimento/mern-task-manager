@@ -11,11 +11,19 @@ mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true, useU
 
 const app = express()
 
+const validateMiddleware = (req, res, next) => {
+    if (req.files == null || req.body.title == null || req.body.body == null) {
+        return res.redirect('/posts/new')
+    }
+    next();
+};
+
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(fileUpload())
+app.use('/posts/store', validateMiddleware);
 
 app.listen(4000, () => {
     console.log('Listening on port 4000')
