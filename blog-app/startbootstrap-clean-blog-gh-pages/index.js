@@ -9,6 +9,7 @@ const newPostController = require('./controllers/newPost');
 const homeController = require('./controllers/home');
 const getPostController = require('./controllers/getPost');
 const storePostController = require('./controllers/storePost');
+const newUserController = require('./controllers/newUser');
 
 mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -48,5 +49,5 @@ app.get('/posts/new', newPostController);
 
 app.post('/posts/store', storePostController);
 
-
+app.get('/auth/register', newUserController);
 
