@@ -12,6 +12,7 @@ const storePostController = require('./controllers/storePost');
 const newUserController = require('./controllers/newUser');
 const storeUserController = require('./controllers/storeUser');
 const loginController = require('./controllers/login');
+const loginUserController = require('./controllers/loginUser');
 
 mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -56,3 +57,5 @@ app.get('/auth/register', newUserController);
 app.post('/users/register', storeUserController);
 
 app.get('/auth/login', loginController);
+
+app.post('/users/login', loginUserController);

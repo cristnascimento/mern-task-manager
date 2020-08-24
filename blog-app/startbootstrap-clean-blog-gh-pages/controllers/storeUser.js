@@ -7,5 +7,6 @@ module.exports = (req, res) => {
             console.log(error);
             return res.redirect('/auth/register');
         }
+        res.redirect("/");
     });
 }
