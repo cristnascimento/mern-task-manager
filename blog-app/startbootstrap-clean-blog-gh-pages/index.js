@@ -14,6 +14,7 @@ const newUserController = require('./controllers/newUser');
 const storeUserController = require('./controllers/storeUser');
 const loginController = require('./controllers/login');
 const loginUserController = require('./controllers/loginUser');
+const authMiddleware = require('./middleware/authMiddleware');
 
 mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -50,9 +51,9 @@ app.get('/contact', (req, res) => {
 
 app.get('/post/:id', getPostController);
 
-app.get('/posts/new', newPostController);
+app.get('/posts/new', authMiddleware, newPostController);
 
-app.post('/posts/store', storePostController);
+app.post('/posts/store', authMiddleware, storePostController);
 
 app.get('/auth/register', newUserController);
 
