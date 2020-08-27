@@ -28,6 +28,8 @@ const validateMiddleware = (req, res, next) => {
     next();
 };
 
+global.loggedIn = null;
+
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(bodyParser.json())
@@ -35,6 +37,10 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(fileUpload())
 app.use('/posts/store', validateMiddleware);
 app.use(expressSession({secret: 'keyboard cat'}));
+app.use('*', (req, res, next) => {
+    loggedIn = req.session.userId;
+    next();
+});
 
 app.listen(4000, () => {
     console.log('Listening on port 4000')
