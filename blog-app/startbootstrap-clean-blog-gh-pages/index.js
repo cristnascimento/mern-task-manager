@@ -16,6 +16,7 @@ const loginController = require('./controllers/login');
 const loginUserController = require('./controllers/loginUser');
 const authMiddleware = require('./middleware/authMiddleware');
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
+const logoutController = require('./controllers/logout');
 
 mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -69,3 +70,5 @@ app.post('/users/register', redirectIfAuthenticatedMiddleware, storeUserControll
 app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController);
 
 app.post('/users/login', redirectIfAuthenticatedMiddleware, loginUserController);
+
+app.get('/auth/logout', logoutController);
