@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 const expressSession = require('express-session');
+const flash = require('connect-flash');
 
 const newPostController = require('./controllers/newPost');
 const homeController = require('./controllers/home');
@@ -31,6 +32,7 @@ const validateMiddleware = (req, res, next) => {
 
 global.loggedIn = null;
 
+app.use(flash());
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(bodyParser.json())
@@ -42,6 +44,7 @@ app.use('*', (req, res, next) => {
     loggedIn = req.session.userId;
     next();
 });
+
 
 app.listen(4000, () => {
     console.log('Listening on port 4000')
