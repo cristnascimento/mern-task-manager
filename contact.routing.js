@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const service = require("./contact.service");
+const todoService = require("./todo.service");
 
 router.get("/", function (req,res) {
     res.render("home");
@@ -47,6 +48,16 @@ router.post("/contact/update/:id", function (req, res) {
 router.get("/contact/delete/:id", function (req, res) {
   service.delete(req.params.id);
   res.redirect("/contact/list");
+});
+
+router.post("/list/todo", function (req,res) {
+  let newId = todoService.add(req.body);
+  res.redirect("/list/todo/1");
+});
+
+router.get("/list/todo/:id", function (req, res) {
+  let items = todoService.getItems();
+  res.render("todo-list", {data: items});
 });
 
 module.exports = router;
