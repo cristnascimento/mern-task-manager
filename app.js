@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const router = require("./contact.routing");
 const hbs = require("./contact.handlebars");
 
+app.use(express.static('public'));
+
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
